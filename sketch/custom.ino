@@ -18,7 +18,7 @@ void send_status() {
 }
 
 void send_status_position() {
-  mqttPublish("position/percent", String(positionToPercentStrict(STEPPER_POSITION)));
+  mqttPublishRetained("position/percent", String(positionToPercentStrict(STEPPER_POSITION)));
   if (STEPPER_STATE==0) {
     mqttPublish("position/target", String(positionToPercentStrict(STEPPER_TARGET)));
   }

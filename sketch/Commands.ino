@@ -101,7 +101,7 @@ void exec_command(String control, String argument)
       eeWriteInt(EEaddr__SEND_STATUS_INTERVAL, SEND_STATUS_INTERVAL);       
   } else if(control.equals("meta")) {
       mqttPublish("meta/version", String(VERSION));
-      mqttPublish("meta/wifi_ip", String(WiFi.localIP()));
+      mqttPublish("meta/wifi_ip", WiFi.localIP().toString());
       mqttPublish("meta/stepper/reverse", STEPPER_REVERSE?"1":"0");
       mqttPublish("meta/stepper/position_steps", String(STEPPER_POSITION));
       mqttPublish("meta/stepper/position_percent", String(positionToPercentStrict(STEPPER_POSITION)));

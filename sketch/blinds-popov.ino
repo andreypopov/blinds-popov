@@ -7,19 +7,19 @@ WiFiClient espClient;
 ESP8266WebServer server(80);
 MQTTClient client;
 
-
-#define VERSION "7.1"
+#define VERSION "7.1.2"
 #define DEBUG
 //==================================================================
 //===SETTINGS block=================================================
 //==================================================================
 const char* WIFI_ssid       = "Popov-Reserved";
 const char* WIFI_password   = "popov4345";
-const char* OTA_hostname    = "Blinds-OTA-02";
+const char* OTA_hostname    = "Blinds-OTA-01";
 const char* OTA_password    = "";
 const char* MQTT_namespace  = "popov"; //first part of mqtt topic /[namespace]/..
-const char* MQTT_device     = "blinds2"; //second part of mqtt topic /[namespace]/[device]/
+const char* MQTT_device     = "blinds1"; //second part of mqtt topic /[namespace]/[device]/
 const char* MQTT_server     = "192.168.1.15";
+int         MQTT_port       =  1883;
 const char* MQTT_username   = "try";
 const char* MQTT_password   = "try";
 const char* MQTT_subscribe  = "command"; //for receiving /[namespace]/[device]/[subscribe]/+
@@ -86,6 +86,10 @@ void setup() {
   setup_webserver();
 
   setup_custom();
+
+  mqttPublish("meta/hello", "Started!");
+  mqttPublish("meta/version", String(VERSION));
+  mqttPublish("meta/wifi_ip", WiFi.localIP().toString());
 }
 
 void setup_serial() {
@@ -152,7 +156,8 @@ void setup_ota() {
 }
 
 void setup_mqtt() {
-  client.begin(MQTT_server, 1883, espClient);
+  client.begin(MQTT_server, MQTT_port, espClient);
+  client.clearWill();
   client.onMessage(messageReceived);
   debug("MQTT ready");
 }
@@ -217,9 +222,17 @@ String getTopicPart(String data, char separator, int index) {
 
 void mqttPublish(String cmd, String payload) {
   String topic = "/"+String(MQTT_namespace)+"/"+String(MQTT_device)+"/"+cmd;
-  client.publish(topic, payload);
+  client.publish(topic, payload, false, 0);
 #if defined (DEBUG)
   Serial.println("MQTT OUT: "+topic+" "+payload);
+#endif
+}
+
+void mqttPublishRetained(String cmd, String payload) {
+  String topic = "/"+String(MQTT_namespace)+"/"+String(MQTT_device)+"/"+cmd;
+  client.publish(topic, payload, true, 0);
+#if defined (DEBUG)
+  Serial.println("MQTT OUT (retained): "+topic+" "+payload);
 #endif
 }
 
