@@ -18,9 +18,9 @@ void send_status() {
 }
 
 void send_status_position() {
-  mqttPublishRetained("position/percent", String(positionToPercentStrict(STEPPER_POSITION)));
+  mqttPublishRetained("position/percent", String(positionToPercentStrict(abs(STEPPER_POSITION))));
   if (STEPPER_STATE==0) {
-    mqttPublish("position/target", String(positionToPercentStrict(STEPPER_TARGET)));
+    mqttPublish("position/target", String(positionToPercentStrict(abs(STEPPER_TARGET))));
   }
   //mqttPublish("meta/stepper/current_rpm", String(stepper.getCurrentRPM()));
 }

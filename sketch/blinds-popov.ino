@@ -7,17 +7,17 @@ WiFiClient espClient;
 ESP8266WebServer server(80);
 MQTTClient client;
 
-#define VERSION "7.1.2"
+#define VERSION "7.2"
 #define DEBUG
 //==================================================================
 //===SETTINGS block=================================================
 //==================================================================
 const char* WIFI_ssid       = "Popov-Reserved";
 const char* WIFI_password   = "popov4345";
-const char* OTA_hostname    = "Blinds-OTA-01";
+const char* OTA_hostname    = "Blinds-OTA-04";
 const char* OTA_password    = "";
 const char* MQTT_namespace  = "popov"; //first part of mqtt topic /[namespace]/..
-const char* MQTT_device     = "blinds1"; //second part of mqtt topic /[namespace]/[device]/
+const char* MQTT_device     = "blinds4"; //second part of mqtt topic /[namespace]/[device]/
 const char* MQTT_server     = "192.168.1.15";
 int         MQTT_port       =  1883;
 const char* MQTT_username   = "try";

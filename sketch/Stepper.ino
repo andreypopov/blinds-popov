@@ -13,7 +13,7 @@ void stepper_move(long int steps) {
     STEPPER_TIMER = millis();
     
     stepper.disable(); //enable!!
-    stepper.startMove(steps);
+    stepper.startMove((STEPPER_REVERSE?-1:1)*steps);
 }
 
 void stepper_move_to(long int pos) {
@@ -37,7 +37,7 @@ void stepper_move_to(long int pos) {
     STEPPER_TIMER = millis();
     
     stepper.disable();
-    stepper.startMove(steps);
+    stepper.startMove((STEPPER_REVERSE?-1:1)*steps);
   }
 }
 
@@ -65,7 +65,7 @@ void stepper_stop() {
 
 //функция отдает процент открытия шторы исходя из количества шагов
 int positionToPercentStrict(long int val) {
-  double valf = val;
+  double valf = abs(val);
   double result = 0.00;
   if (valf < stepper_calibration[1]) {
     float tmp = (10.0 - (stepper_calibration[1] - valf) / (stepper_calibration[1] - 0.0) * 10.0);
